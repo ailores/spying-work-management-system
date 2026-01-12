@@ -1,10 +1,10 @@
-from typing import Any, Sequence
+from typing import Sequence
 
 from fastapi import APIRouter
 from sqlalchemy import select
 
 from app.api.deps import SessionDep
-from app.core.models import SpyCatModel
+from app.core.models.models import SpyCatModel
 from app.core.schemas.cat_schemas import SpyCatSchema, SpyCatUpdate, SpyCatResponse, SpyCatModelResponse
 
 
@@ -19,7 +19,7 @@ router: APIRouter = APIRouter(
 
 
 @router.get(path="", response_model=list[SpyCatModelResponse])
-async def get_cats(session: SessionDep) -> Sequence[Any]:
+async def get_cats(session: SessionDep) -> Sequence[SpyCatModelResponse]:
     return session.execute(select(SpyCatModel)).scalars().all()
 
 
@@ -53,7 +53,7 @@ async def delete_cat(cat_id: int, session: SessionDep) -> dict[str, str | SpyCat
     }
 
 
-@router.put(path="/{cat_id}", response_model=SpyCatResponse)
+@router.patch(path="/{cat_id}", response_model=SpyCatResponse)
 async def update_cat(cat_id: int, cat_data: SpyCatUpdate, session: SessionDep) -> dict[str, str | SpyCatModelResponse]:
     cat: SpyCatModel = session.execute(select(SpyCatModel).where(SpyCatModel.id == cat_id)).scalars().first()
     cat.salary = cat_data.salary
