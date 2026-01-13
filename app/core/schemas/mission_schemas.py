@@ -26,7 +26,7 @@ class TargetResponseSchema(BaseModel):
 
 
 class MissionCreateSchema(BaseModel):
-    targets: list[TargetCreateSchema] = Field(min_length=1, max_length=3)
+    targets: list[TargetCreateSchema]
 
 
 class MissionModelResponse(BaseModel):

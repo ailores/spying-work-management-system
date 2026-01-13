@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field, ConfigDict
 
 
-class SpyCatSchema(BaseModel):
+class SpyCatCreateSchema(BaseModel):
     name: str = Field(min_length=2, max_length=50)
     breed: str
     experience: int = Field(ge=0)
